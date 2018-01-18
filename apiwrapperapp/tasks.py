@@ -14,10 +14,8 @@ database_service = DatabaseService(models, settings.CONSUMER_KEY, settings.CONSU
 
 @shared_task
 def save_trend(trend):
-    try:
-        database_service.save_trend(trend)
-    except:
-        print("Save trend error")
+    database_service.save_trend(trend)
+
 
 
 @shared_task
