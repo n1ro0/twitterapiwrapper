@@ -75,7 +75,7 @@ class APIWrapper:
         url = '{}1.1/search/tweets.json'.format(self.base_url)
         resp = requests.get(url, headers=headers, params=search_params)
         data = json.loads(resp.content.decode())
-        if data is not dict:
+        if type(data) is not dict:
             return []
         tweets_as_dicts = data.get('statuses', [])
         tweets = []
@@ -83,10 +83,11 @@ class APIWrapper:
             text = tweet_as_dict.get("text", None)
             username = tweet_as_dict.get("user", {}).get("name", None)
             created_at = tweet_as_dict.get("created_at", "")
-            hashtags_as_dicts = tweet_as_dict.get("entities", {}).get("hashtags", [])
+            entities = tweet_as_dict.get("entities", {})
+            hashtags_as_dicts = entities.get("hashtags", [])
             hashtags = []
             for hashtag_as_dict in hashtags_as_dicts:
-                text = hashtag_as_dict.get('text')
+                text = hashtag_as_dict.get('text', 'No Text')
                 hashtag = models.Hashtag(text)
                 hashtags.append(hashtag)
             tweet = models.Tweet(username, created_at, text, hashtags)
