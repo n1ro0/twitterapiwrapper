@@ -51,7 +51,7 @@ class APIWrapper:
         url = '{}1.1/trends/place.json?id={}'.format(self.base_url, area_id)
         resp = requests.get(url, headers=headers)
         data = json.loads(resp.content.decode())
-        trends_as_dicts = next(iter(data), {}).get("trends", "No trends")
+        trends_as_dicts = next(iter(data), {}).get("trends", [])
         trends = []
         for trend_as_dict in trends_as_dicts:
             name = trend_as_dict.get('name', 'Not found.')
@@ -72,16 +72,18 @@ class APIWrapper:
             'result_type': 'recent',
             'count': count
         }
-
         url = '{}1.1/search/tweets.json'.format(self.base_url)
         resp = requests.get(url, headers=headers, params=search_params)
-        tweets_as_dicts = json.loads(resp.content.decode()).get('statuses')
+        data = json.loads(resp.content.decode())
+        if data is not dict:
+            return []
+        tweets_as_dicts = data.get('statuses', [])
         tweets = []
         for tweet_as_dict in tweets_as_dicts:
             text = tweet_as_dict.get("text", None)
             username = tweet_as_dict.get("user", {}).get("name", None)
             created_at = tweet_as_dict.get("created_at", "")
-            hashtags_as_dicts = tweet_as_dict.get("entities", {}).get("hashtags", {})
+            hashtags_as_dicts = tweet_as_dict.get("entities", {}).get("hashtags", [])
             hashtags = []
             for hashtag_as_dict in hashtags_as_dicts:
                 text = hashtag_as_dict.get('text')
