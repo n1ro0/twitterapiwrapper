@@ -17,7 +17,6 @@ def save_trend(trend):
     database_service.save_trend(trend)
 
 
-
 @shared_task
 def save_trends():
     trends = database_service.get_trends()

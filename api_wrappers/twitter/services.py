@@ -29,8 +29,6 @@ class DatabaseService:
             trend_id=trend_id,
             text=tweet.text)
         saved_tweet = next(iter(result))
-        print(len(tweet.hashtags))
-
         for hashtag in tweet.hashtags:
             saved_hashtag = self.save_hashtag(hashtag)
             saved_tweet.hashtags.add(saved_hashtag)

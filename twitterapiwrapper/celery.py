@@ -8,7 +8,7 @@ from celery import Celery
 # from apiwrapperapp import tasks
 
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'twitterapiwrapper.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings')
 app = Celery('twitterapiwrapper')
 app.config_from_object('django.conf:settings', namespace='CELERY')
 app.autodiscover_tasks()

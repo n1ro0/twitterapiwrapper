@@ -43,8 +43,8 @@ CELERY_TIMEZONE = 'UTC'
 
 CELERY_BEAT_SCHEDULE = {
     'save_trends': {
-        'task': 'apiwrapperapp.tasks.save_trends',
-        'schedule': 30.0
+        'task': 'twitterapiwrapper.apiwrapperapp.tasks.save_trends',
+        'schedule': 15 * 60.0
     }
 }
 
@@ -57,7 +57,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'apiwrapperapp',
+    'twitterapiwrapper.apiwrapperapp',
 ]
 
 MIDDLEWARE = [
@@ -70,7 +70,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'twitterapiwrapper.urls'
+ROOT_URLCONF = 'config.urls'
 
 TEMPLATES = [
     {
@@ -88,7 +88,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'twitterapiwrapper.wsgi.application'
+WSGI_APPLICATION = 'config.wsgi.application'
 
 
 # Database
