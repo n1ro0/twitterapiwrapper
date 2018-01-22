@@ -1,5 +1,5 @@
 from django.apps import AppConfig
 
 
-class ApiwrapperappConfig(AppConfig):
+class TrendsAppConfig(AppConfig):
     name = 'trends'

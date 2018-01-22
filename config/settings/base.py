@@ -1,4 +1,5 @@
 import os
+import pathlib
 # import json
 
 
@@ -26,7 +27,20 @@ def get_env_variable(var_name):
 
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = pathlib.Path(__file__).resolve().parent.parent.parent
+
+MEDIA_ROOT = BASE_DIR / 'media'
+
+STATIC_ROOT = BASE_DIR / 'static_root'
+
+STATIC_DIRS = [BASE_DIR / 'static']
+
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [BASE_DIR / 'templates']
+    },
+]
 
 
 # Quick-start development settings - unsuitable for production
@@ -70,6 +84,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'twitterapiwrapper.core',
     'twitterapiwrapper.trends',
     'django_extensions',
 ]
