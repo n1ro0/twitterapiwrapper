@@ -7,7 +7,8 @@ from rest_framework.urlpatterns import format_suffix_patterns
 from . import views
 
 urlpatterns = {
-    path(r'', views.TrendCreateView.as_view(), name="create"),
+    path(r'', views.TrendListCreateView.as_view(), name="create"),
+    path(r'<int:pk>/', views.TrendDetail.as_view()),
 }
 
 urlpatterns = format_suffix_patterns(urlpatterns)
