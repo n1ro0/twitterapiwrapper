@@ -2,6 +2,17 @@ from django.db import models
 from django.utils import timezone
 
 
+class CustomManager(models.Manager):
+    use_for_related_fields = True
+
+    def get_queryset(self, *args, **kwargs):
+        return super(CustomManager, self).get_queryset().filter(id__eq=10)
+
+    def custom_method(self, **kwargs):
+        print(self.model)
+        return self.filter(id__lte=10, **kwargs)
+
+
 class TimeStampedModel(models.Model):
     """
     An abstract base class model that provides self-updating
@@ -18,3 +29,5 @@ class TimeStampedModel(models.Model):
 
     class Meta:
         abstract = True
+
+
