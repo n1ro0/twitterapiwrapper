@@ -21,7 +21,7 @@ class TweetSerializer(serializers.ModelSerializer):
     """Serializer to map the Model instance into JSON format."""
     class Meta:
         """Meta class to map serializer's fields with the model fields."""
-        model = models.Trend
+        model = models.Tweet
         fields = (
             'id', 'username', 'created_at',
             'text', 'trend_id', 'created',
