@@ -15,9 +15,12 @@ class TrendListCreateView(generics.ListCreateAPIView):
     queryset = models.Trend.objects.all()
     serializer_class = serializers.TrendSerializer
 
-    def perform_create(self, serializer):
-        """Save the post data when creating a new trend."""
-        serializer.save()
+
+class TrendRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = models.Trend.objects.all()
+    # permission_classes = (IsAuthenticated, )
+    serializer_class = serializers.TrendSerializer
+    lookup_field = 'pk'
 
 
 class TrendDetail(generics.GenericAPIView):
@@ -25,6 +28,7 @@ class TrendDetail(generics.GenericAPIView):
     Retrieve, update or delete a trend instance.
     """
     serializer_class = serializers.TrendSerializer
+
     def get_object(self, pk):
         try:
             return models.Trend.objects.get(pk=pk)
@@ -48,3 +52,13 @@ class TrendDetail(generics.GenericAPIView):
         trend = self.get_object(pk)
         trend.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class TweetListCreateView(generics.ListCreateAPIView):
+    """This class defines the create behavior of our rest api."""
+    queryset = models.Tweet.objects.all()
+    serializer_class = serializers.TweetSerializer
+
+    def perform_create(self, serializer):
+        """Save the post data when creating a new trend."""
+        serializer.save()
