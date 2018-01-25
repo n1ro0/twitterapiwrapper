@@ -41,7 +41,7 @@ from twitterapiwrapper.core import models as core_models
 class Trend(core_models.TimeStampedModel):
     name = models.CharField(max_length=200)
     tweet_volume = models.IntegerField()
-    url = models.CharField(max_length=300)
+    url = models.URLField(max_length=300)
 
     def __str__(self):
         return self.name

@@ -20,5 +20,5 @@ from django.conf.urls import include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path(r'trends/', include('twitterapiwrapper.trends.urls')),
+    path('', include('twitterapiwrapper.trends.urls')),
 ]
