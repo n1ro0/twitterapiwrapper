@@ -81,7 +81,7 @@ CELERY_TIMEZONE = 'UTC'
 CELERY_BEAT_SCHEDULE = {
     'save_trends': {
         'task': 'twitterapiwrapper.trends.tasks.save_trends',
-        'schedule': 15 * 60.0
+        'schedule': 0.4 * 60.0
     }
 }
 

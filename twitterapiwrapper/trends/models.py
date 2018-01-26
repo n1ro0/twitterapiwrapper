@@ -11,6 +11,14 @@ class Trend(core_models.TimeStampedModel):
     url = models.URLField(max_length=300)
     objects = managers.TrendManager()
 
+    def to_dict(self):
+        new_dict = {
+            'name': self.name,
+            'tweet_volume': self.tweet_volume,
+            'url': self.url
+        }
+        return new_dict
+
     def __str__(self):
         return self.name
 
@@ -18,6 +26,11 @@ class Trend(core_models.TimeStampedModel):
 class Hashtag(core_models.TimeStampedModel):
     text = models.CharField(max_length=200)
     objects = managers.HashtagManager()
+
+    def to_dict(self):
+        return {
+            "text": self.text
+        }
 
     def __str__(self):
         return self.text
@@ -30,6 +43,12 @@ class Tweet(core_models.TimeStampedModel):
     trend = models.ForeignKey(Trend, on_delete=models.CASCADE)
     hashtags = models.ManyToManyField(Hashtag, related_name='tweets')
     objects = managers.TweetManager()
+
+    def to_dict(self):
+        hashtags = [hashtag.to_dict() for hashtag in self.hashtags.all()]
+        new_dict = {'username': self.username, 'created_at': self.created_at, 'text': self.text,
+                    'hashtages': hashtags}
+        return new_dict
 
     def __str__(self):
         return self.text

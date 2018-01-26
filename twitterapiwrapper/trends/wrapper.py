@@ -58,7 +58,7 @@ class APIWrapper:
             tweet_volume = trend_as_dict.get('tweet_volume', None)
             tweet_volume = 0 if tweet_volume is None else tweet_volume
             url = trend_as_dict.get('url', "Not found.")
-            trend = models.Trend(name, tweet_volume, url)
+            trend = models.Trend(name=name, tweet_volume=tweet_volume, url=url)
             trends.append(trend)
         return trends
 
@@ -78,7 +78,7 @@ class APIWrapper:
         if type(data) is not dict:
             return []
         tweets_as_dicts = data.get('statuses', [])
-        tweets = []
+        tweets_with_hashtags = []
         for tweet_as_dict in tweets_as_dicts:
             text = tweet_as_dict.get("text", None)
             username = tweet_as_dict.get("user", {}).get("name", None)
@@ -88,11 +88,11 @@ class APIWrapper:
             hashtags = []
             for hashtag_as_dict in hashtags_as_dicts:
                 text = hashtag_as_dict.get('text', 'No Text')
-                hashtag = models.Hashtag(text)
+                hashtag = models.Hashtag(text=text)
                 hashtags.append(hashtag)
-            tweet = models.Tweet(username, created_at, text, hashtags)
-            tweets.append(tweet)
-        return tweets
+            tweet = models.Tweet(username=username, created_at=created_at, text=text)
+            tweets_with_hashtags.append((tweet, hashtags))
+        return tweets_with_hashtags
 
     @_check_auth
     def tweets_from_trends(self, trends_count=10, count=5):
@@ -102,14 +102,3 @@ class APIWrapper:
                 break
             tweets += self.search_tweets(trend.get('name'), count)
         return tweets
-
-
-if __name__ == "__main__":
-    pass
-    # CONSUMER_KEY = 'ofWH8kEM24kJZKgWE2KiWUHmC'
-    # CONSUMER_SECRET = 'fwjgMf6WYW6F7v5Gnkbya8k4q00PF5XLbRzctvnfXYRtL5c19g'
-    # client = APIWrapper(CONSUMER_KEY, CONSUMER_SECRET)
-    # trends = client.get_trends()
-    # trend = next(iter(trends), "No trends")
-    # for tweet in client.search_tweets(trend.name):
-    #     print(tweet.to_dict())
