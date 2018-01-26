@@ -2,15 +2,7 @@ from django.db import models
 from django.utils import timezone
 
 
-class CustomManager(models.Manager):
-    use_for_related_fields = True
-
-    def get_queryset(self, *args, **kwargs):
-        return super(CustomManager, self).get_queryset().filter(id__eq=10)
-
-    def custom_method(self, **kwargs):
-        print(self.model)
-        return self.filter(id__lte=10, **kwargs)
+from . import managers
 
 
 class TimeStampedModel(models.Model):
@@ -20,6 +12,7 @@ class TimeStampedModel(models.Model):
     """
     created = models.DateTimeField(editable=False)
     modified = models.DateTimeField(auto_now=True)
+    object = managers.TimeStampedManager()
 
     def save(self, *args, **kwargs):
         """ On save, update timestamps """
@@ -29,5 +22,4 @@ class TimeStampedModel(models.Model):
 
     class Meta:
         abstract = True
-
-
+        get_latest_by = 'created'
