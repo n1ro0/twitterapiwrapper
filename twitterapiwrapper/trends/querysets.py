@@ -9,7 +9,8 @@ class TrendQuerySet(models.QuerySet):
 
 class TweetQuerySet(models.QuerySet):
     def without_hashtags(self):
-        return self.annotate(hashtags_count=models.Count('hashtags')).filter(hashtags_count=0)
+        # return self.annotate(hashtags_count=models.Count('hashtags')).filter(hashtags_count=0)
+        return self.filter(hashtags__isnull=True)
     without_hashtags.queryset_only = False
 
 
