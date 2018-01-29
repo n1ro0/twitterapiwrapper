@@ -20,3 +20,28 @@ class HashtagModelAPITestCase(APITestCase):
         hashtag = models.Hashtag.objects.get()
         self.assertEqual(self.hashtag, hashtag)
         self.assertEqual(self.hashtag.id, hashtag.id)
+
+    def test_model_can_add_tweet_to_hashtag(self):
+        self.hashtag.save()
+        new_trend = models.Trend.objects.create(
+            name='new_name',
+            tweet_volume=22222,
+            url='https://newtrend.com/api/trend/ok'
+        )
+        tweet = models.Tweet.objects.create(
+            username='new_username',
+            created_at='new_created_at',
+            text='new_text',
+            trend=new_trend
+        )
+        models.Tweet.objects.create(
+            username='new_username2',
+            created_at='new_created_at2',
+            text='new_text2',
+            trend=new_trend
+        )
+        hashtag = models.Hashtag.objects.prefetch_related('tweets').get()
+        hashtag.tweets.add(tweet)
+        self.assertEqual(models.Tweet.objects.count(), 2)
+        self.assertEqual(hashtag.tweets.count(), 1)
+
