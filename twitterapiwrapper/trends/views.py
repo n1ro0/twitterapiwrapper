@@ -47,23 +47,25 @@ class TrendsModelViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.TrendSerializer
     queryset = models.Trend.objects.all()
 
-    @detail_route(methods=['get'])
+    @detail_route(methods=['get', 'post'])
     def tweets(self, request, pk=None):
-        tweets = models.Tweet.objects.filter(trend_id=pk)
-        serializer = serializers.TweetSerializer(tweets, many=True)
-        return Response(serializer.data)
-        # new_data = {
-        #     'username': request.data['username'],
-        #     'created_at': request.data['created_at'],
-        #     'text': request.data['text'],
-        #     'trend': pk,
-        # }
-        # serializer = serializers.TweetSerializer(data=new_data)
-        #
-        # if serializer.is_valid():
-        #     serializer.save()
-        #     return Response(serializer.data, status=status.HTTP_201_CREATED)
-        # return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        if request.method == 'GET':
+            tweets = models.Tweet.objects.filter(trend_id=pk)
+            serializer = serializers.TweetSerializer(tweets, many=True)
+            return Response(serializer.data)
+        elif request.method == 'POST':
+            new_data = {
+                'username': request.data['username'],
+                'created_at': request.data['created_at'],
+                'text': request.data['text'],
+                'trend': pk,
+            }
+            serializer = serializers.TweetSerializer(data=new_data)
+
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     @list_route()
     def recent_trends(self, request):
