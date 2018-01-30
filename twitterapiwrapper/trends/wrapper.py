@@ -2,6 +2,9 @@ import base64
 import json
 
 
+from django.utils import timezone
+
+
 import requests
 
 
@@ -83,6 +86,8 @@ class APIWrapper:
             text = tweet_as_dict.get("text", None)
             username = tweet_as_dict.get("user", {}).get("name", None)
             created_at = tweet_as_dict.get("created_at", "")
+            datetime_format = '%a %b %d %X %z %Y'
+            published = timezone.datetime.strptime(created_at, datetime_format)
             entities = tweet_as_dict.get("entities", {})
             hashtags_as_dicts = entities.get("hashtags", [])
             hashtags = []
@@ -90,7 +95,7 @@ class APIWrapper:
                 text = hashtag_as_dict.get('text', 'No Text')
                 hashtag = models.Hashtag(text=text)
                 hashtags.append(hashtag)
-            tweet = models.Tweet(username=username, created_at=created_at, text=text)
+            tweet = models.Tweet(username=username, published=published, text=text)
             tweets_with_hashtags.append((tweet, hashtags))
         return tweets_with_hashtags
 

@@ -1,3 +1,6 @@
+from django.utils import timezone
+
+
 from rest_framework.test import APITestCase
 from rest_framework import status
 
@@ -103,19 +106,19 @@ class TrendAPITestCase(APITestCase):
         )
         models.Tweet.objects.create(
             username='new_username',
-            created_at='new_created_at',
+            published=timezone.now(),
             text='new_text',
             trend=trend
         )
         models.Tweet.objects.create(
             username='new_username1',
-            created_at='new_created_at',
+            published=timezone.now(),
             text='new_text',
             trend=trend
         )
         models.Tweet.objects.create(
             username='new_username2',
-            created_at='new_created_at',
+            published=timezone.now(),
             text='new_text',
             trend=trend
         )
@@ -138,25 +141,25 @@ class TrendAPITestCase(APITestCase):
         )
         models.Tweet.objects.create(
             username='new_username',
-            created_at='new_created_at',
+            published=timezone.now(),
             text='new_text',
             trend=trend
         )
         models.Tweet.objects.create(
             username='new_username1',
-            created_at='new_created_at',
+            published=timezone.now(),
             text='new_text',
             trend=trend
         )
         models.Tweet.objects.create(
             username='new_username2',
-            created_at='new_created_at',
+            published=timezone.now(),
             text='new_text',
             trend=trend
         )
         tweet_data = {
             'username': 'new_username2',
-            'created_at': 'new_created_at',
+            'published': timezone.now(),
             'text': 'new_text',
         }
         url = '/trends/{}/tweets/'.format(trend.id)

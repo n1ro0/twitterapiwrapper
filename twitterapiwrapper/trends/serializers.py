@@ -23,7 +23,7 @@ class TweetSerializer(serializers.ModelSerializer):
         """Meta class to map serializer's fields with the model fields."""
         model = models.Tweet
         fields = (
-            'id', 'username', 'created_at',
+            'id', 'username', 'published',
             'text', 'trend', 'created',
             'modified'
         )

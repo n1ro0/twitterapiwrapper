@@ -1,3 +1,6 @@
+from django.utils import timezone
+
+
 from rest_framework.test import APITestCase
 
 
@@ -37,19 +40,19 @@ class HashtagModelAPITestCase(APITestCase):
         )
         tweet = models.Tweet.objects.create(
             username='new_username',
-            created_at='new_created_at',
+            published=timezone.now(),
             text='new_text',
             trend=new_trend
         )
         tweet1 = models.Tweet.objects.create(
             username='new_username1',
-            created_at='new_created_at1',
+            published=timezone.now(),
             text='new_text1',
             trend=new_trend
         )
         models.Tweet.objects.create(
             username='new_username2',
-            created_at='new_created_at2',
+            published=timezone.now(),
             text='new_text2',
             trend=new_trend
         )

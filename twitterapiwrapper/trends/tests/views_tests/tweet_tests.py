@@ -1,3 +1,6 @@
+from django.utils import timezone
+
+
 from rest_framework.test import APITestCase
 from rest_framework import status
 
@@ -16,19 +19,19 @@ class TweetAPITestCase(APITestCase):
         )
         self.tweet_data = {
             'username': 'setUp_username',
-            'created_at': 'setUp_created_at',
+            'published': timezone.now(),
             'text': 'setUp_text',
             'trend': self.trend.id
         }
         models.Tweet.objects.create(
             username='test',
-            created_at='test',
+            published=timezone.now(),
             text='test',
             trend_id=self.trend.id
         )
         models.Tweet.objects.create(
             username='test',
-            created_at='test',
+            published=timezone.now(),
             text='test',
             trend_id=self.trend.id
         )
@@ -41,7 +44,7 @@ class TweetAPITestCase(APITestCase):
 
     def test_create_a_tweet(self):
         initial_count = models.Tweet.objects.count()
-        response = self.client.post(self.base_url, self.tweet_data, format='json')
+        response = self.client.post(self.base_url, self.tweet_data)
         new_count = models.Tweet.objects.count()
         tweet = models.Tweet.objects.get(id=response.data['id'])
         self.assertNotEqual(initial_count, new_count)
@@ -67,7 +70,7 @@ class TweetAPITestCase(APITestCase):
         """
         tweet = models.Tweet.objects.first()
         url = self.base_url + '{}/'.format(tweet.id)
-        response = self.client.put(url, self.tweet_data, format='json')
+        response = self.client.put(url, self.tweet_data)
         updated_tweet = models.Tweet.objects.get(pk=tweet.pk)
         self.assertEquals(response.status_code, status.HTTP_200_OK)
         self.assertEquals(tweet.id, response.data['id'])

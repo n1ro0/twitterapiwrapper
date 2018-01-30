@@ -56,7 +56,7 @@ class TrendsModelViewSet(viewsets.ModelViewSet):
         elif request.method == 'POST':
             new_data = {
                 'username': request.data['username'],
-                'created_at': request.data['created_at'],
+                'published': request.data['published'],
                 'text': request.data['text'],
                 'trend': pk,
             }

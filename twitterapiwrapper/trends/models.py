@@ -38,7 +38,7 @@ class Hashtag(core_models.TimeStampedModel):
 
 class Tweet(core_models.TimeStampedModel):
     username = models.CharField(max_length=50)
-    created_at = models.CharField(max_length=200)
+    published = models.DateTimeField()
     text = models.TextField()
     trend = models.ForeignKey(Trend, on_delete=models.CASCADE)
     hashtags = models.ManyToManyField(Hashtag, related_name='tweets')
@@ -46,7 +46,7 @@ class Tweet(core_models.TimeStampedModel):
 
     def to_dict(self):
         hashtags = [hashtag.to_dict() for hashtag in self.hashtags.all()]
-        new_dict = {'username': self.username, 'created_at': self.created_at, 'text': self.text,
+        new_dict = {'username': self.username, 'published': self.created_at, 'text': self.text,
                     'hashtages': hashtags}
         return new_dict
 

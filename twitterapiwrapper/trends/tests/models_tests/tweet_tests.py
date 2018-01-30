@@ -1,4 +1,5 @@
 from django.test import TestCase
+from django.utils import timezone
 
 
 from ... import models
@@ -7,7 +8,7 @@ from ... import models
 class TweetModelTestCase(TestCase):
     def setUp(self):
         self.username = "test_username"
-        self.created_at = '19/03/1991'
+        self.published = timezone.now()
         self.text = 'test_text'
         self.trend, self.is_created = models.Trend.objects.get_or_create(
             name='trend_name',
@@ -16,7 +17,7 @@ class TweetModelTestCase(TestCase):
         )
         self.tweet = models.Tweet(
             username=self.username,
-            created_at=self.created_at,
+            published=self.published,
             text=self.text,
             trend=self.trend
         )
@@ -36,7 +37,7 @@ class TweetModelTestCase(TestCase):
         self.tweet.save()
         tweet, is_created = models.Tweet.objects.get_or_create(
             username=self.username,
-            created_at=self.created_at,
+            published=self.published,
             text=self.text,
             trend=self.trend
         )
@@ -52,7 +53,7 @@ class TweetModelTestCase(TestCase):
         )
         tweet, tweet_is_created = models.Tweet.objects.get_or_create(
             username='new_username',
-            created_at='new_created_at',
+            published=self.published,
             text='new_text',
             trend=new_trend
         )
@@ -67,14 +68,14 @@ class TweetModelTestCase(TestCase):
             tweet_volume=22222,
             url='https://newtrend.com/api/trend/ok'
         )
-        new_username, new_created_at, new_text = \
-            'new_username', 'new_created_at', 'new_text'
-        tweet.username, tweet.created_at, tweet.text, tweet.trend = \
-            new_username, new_created_at, new_text, new_trend
+        new_username, new_published, new_text = \
+            'new_username', timezone.now(), 'new_text'
+        tweet.username, tweet.published, tweet.text, tweet.trend = \
+            new_username, new_published, new_text, new_trend
         tweet.save()
         new_tweet = models.Tweet.objects.get()
         self.assertEqual(new_tweet.username, new_username)
-        self.assertEqual(new_tweet.created_at, new_created_at)
+        self.assertEqual(new_tweet.published, new_published)
         self.assertEqual(new_tweet.text, new_text)
         self.assertEqual(new_tweet.trend_id, new_trend.id)
 
